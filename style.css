@@ -1,0 +1,23 @@
+#main-component {
+	width: 100%;
+}
+
+#child-component {
+	width: 30%;
+	height: auto;
+	margin: auto;
+	margin-top: 5%;
+	padding: 1%;
+	border: solid 2px black;
+	border-radius: 6%; /* Eliminado para un borde cuadrado */
+}
+
+#from-select {
+	border: solid 1px black;
+	border-radius: 8%;
+}
+
+#result {
+	color: green;
+	text-align: center;
+}

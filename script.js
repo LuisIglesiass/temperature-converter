@@ -1,44 +1,66 @@
-var temperature = document.getElementById('value');
-var fromUnit = document.getElementById('fromSelect');
-var toUnit = document.getElementById('toSelect');
+// Obtener los elementos del DOM
+var temperatureInput = document.getElementById('value');
+var fromUnit = document.getElementById('from-select');
+var toUnit = document.getElementById('to-select');
 var result = 0;
 var inputSign = "";
 var outputSign = "";
 
-
-function calculateTemperature(temperature) {
-	if(fromUnit == 'fahrenheit' && toUnit == 'celseus') {
-		inputSign = "°F";
-		outputSign = "°C";
-		return result = (temperature - 32) * 5/9;
-	} else if (fromUnit == 'fahrenheit' && toUnit == 'kelvin') {
-		inputSign = "°F";
-		outputSign = "K";
-		return result = (temperature - 32) * 5/9 + 273.15;
-	} else if (fromUnit == 'celseus' && toUnit == 'fahrenheit') {
-		inputSign = "°C";
-		outputSign = "°F";
-		return result = (temperature * 9/5) + 32;
-	} else if (fromUnit == 'celseus' && toUnit == 'kelvin') {
-		inputSign = "°C";
-		outputSign = "K";
-		return result = temperature + 273.15;
-	} else if (fromUnit == 'kelvin' && toUnit == 'celseus') {
-		inputSign = "K";
-		outputSign = "°C";
-		return result = temperature - 273.15;
-	} else if (fromUnit == 'kelvin' && toUnit == 'fahrenheit') {
-		inputSign = "K";
-		outputSign = "°F";
-		return result = (temperature - 273.15) * 9/5 + 32;
-	}
+// Función de conversión de temperaturas
+function calculateTemperature(temperature, fromUnitValue, toUnitValue) {
+    if (fromUnitValue === 'Fahrenheit' && toUnitValue === 'Celsius') {
+        inputSign = "°F";
+        outputSign = "°C";
+        return (temperature - 32) * 5/9;
+    } else if (fromUnitValue === 'Fahrenheit' && toUnitValue === 'Kelvin') {
+        inputSign = "°F";
+        outputSign = "K";
+        return (temperature - 32) * 5/9 + 273.15;
+    } else if (fromUnitValue === 'Celsius' && toUnitValue === 'Fahrenheit') {
+        inputSign = "°C";
+        outputSign = "°F";
+        return (temperature * 9/5) + 32;
+    } else if (fromUnitValue === 'Celsius' && toUnitValue === 'Kelvin') {
+        inputSign = "°C";
+        outputSign = "K";
+        return temperature + 273.15;
+    } else if (fromUnitValue === 'Kelvin' && toUnitValue === 'Celsius') {
+        inputSign = "K";
+        outputSign = "°C";
+        return temperature - 273.15;
+    } else if (fromUnitValue === 'Kelvin' && toUnitValue === 'Fahrenheit') {
+        inputSign = "K";
+        outputSign = "°F";
+        return (temperature - 273.15) * 9/5 + 32;
+    } else {
+        return "Invalid conversion";  // Si las unidades seleccionadas no son válidas
+    }
 }
 
-document.getElementById('temperatureForm').addEventListener('submit', function(event) {
+// Escuchar el evento 'submit' del formulario
+document.getElementById('temperature-form').addEventListener('submit', function(event) {
     // Prevenir que el formulario recargue la página
     event.preventDefault();
 
-    calculateTemperature(temperature);
+    // Obtener los valores de los inputs
+    var temperature = parseFloat(temperatureInput.value);
+    var fromUnitValue = fromUnit.value;
+    var toUnitValue = toUnit.value;
+
+    // Verificar si el valor de temperatura es un número válido
+    if (isNaN(temperature)) {
+        document.getElementById('result').textContent = "Por favor, introduce un número válido para la temperatura.";
+        return;
+    }
+
+    // Verificar si se seleccionaron unidades de conversión
+    if (!fromUnitValue || !toUnitValue) {
+        document.getElementById('result').textContent = "Por favor, selecciona las unidades de conversión.";
+        return;
+    }
+
+    // Calcular la conversión
+    result = calculateTemperature(temperature, fromUnitValue, toUnitValue);
 
     // Mostrar el resultado en la página
     document.getElementById('result').textContent = `${temperature}${inputSign} es igual a ${result}${outputSign}`;
