@@ -2,9 +2,13 @@
 var temperatureInput = document.getElementById('value');
 var fromUnit = document.getElementById('from-select');
 var toUnit = document.getElementById('to-select');
+var convertButton = document.getElementById('convertButton');
 var result = 0;
 var inputSign = "";
 var outputSign = "";
+
+// Deshabilitar el botón de conversión al cargar la página
+convertButton.disabled = true;
 
 // Función de conversión de temperaturas
 function calculateTemperature(temperature, fromUnitValue, toUnitValue) {
@@ -37,6 +41,19 @@ function calculateTemperature(temperature, fromUnitValue, toUnitValue) {
     }
 }
 
+function disableConvertButton() {
+    if (temperatureInput.value.trim() === "" && fromUnit.value === "" && toUnit.value === "") {
+        convertButton.disabled = true;
+    } else {
+        convertButton.disabled = false; // Habilitar el botón si hay entradas
+    }
+}
+
+// Agregar eventos de entrada para verificar continuamente
+temperatureInput.addEventListener('input', disableConvertButton);
+fromUnit.addEventListener('input', disableConvertButton);
+toUnit.addEventListener('input', disableConvertButton);
+
 // Escuchar el evento 'submit' del formulario
 document.getElementById('temperature-form').addEventListener('submit', function(event) {
     // Prevenir que el formulario recargue la página
@@ -56,6 +73,7 @@ document.getElementById('temperature-form').addEventListener('submit', function(
     // Verificar si se seleccionaron unidades de conversión
     if (!fromUnitValue || !toUnitValue) {
         document.getElementById('result').textContent = "Por favor, selecciona las unidades de conversión.";
+        this.disableConvertButton();
         return;
     }
 
@@ -63,5 +81,5 @@ document.getElementById('temperature-form').addEventListener('submit', function(
     result = calculateTemperature(temperature, fromUnitValue, toUnitValue);
 
     // Mostrar el resultado en la página
-    document.getElementById('result').textContent = `${temperature}${inputSign} es igual a ${result}${outputSign}`;
+    document.getElementById('result').textContent = `${temperature}${inputSign} es igual a ${result.toFixed(2)}${outputSign}`;
 });
